@@ -5,14 +5,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import dev.verosampedro.aniproject.users.User;
 
 @Entity
 @Table(name = "requests")
 public class Request {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -27,7 +31,10 @@ public class Request {
     @Column(nullable = false)
     private String requestDescription;
 
-    
+    @ManyToOne
+    @JoinColumn(name = "user_id") 
+    private User assignedUser;
+
     public Request() {
     }
     

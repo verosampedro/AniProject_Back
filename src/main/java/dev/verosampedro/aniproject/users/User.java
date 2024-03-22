@@ -36,12 +36,10 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-
     @OneToMany(mappedBy = "assignedUser", cascade = CascadeType.ALL)
-    @JsonBackReference // Añade esta anotación aquí
+    @JsonBackReference
     private List<Request> requests = new ArrayList<>();
 
-    // ** un Role puede tener muchos User, pero cada User tiene un único Role
     @ManyToOne
     @JoinColumn(name = "role_id")
     @JsonManagedReference 

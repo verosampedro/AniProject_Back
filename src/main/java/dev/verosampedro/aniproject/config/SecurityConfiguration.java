@@ -43,8 +43,8 @@ public class SecurityConfiguration {
                         .logoutUrl(endpoint + "/logout")
                         .deleteCookies("JSESSIONID"))
                     .authorizeHttpRequests(auth -> auth                     
-                    .requestMatchers(HttpMethod.GET, endpoint + "/login").permitAll()
-                    .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
+                    .requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
+                    // .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
                     .requestMatchers(HttpMethod.GET, endpoint + "/requests/**").hasAnyRole("ADMIN","USER")  
                     .requestMatchers(HttpMethod.POST, endpoint + "/requests/**").hasAnyRole("ADMIN","USER")
                     .requestMatchers(HttpMethod.PUT, endpoint + "/requests/**").hasAnyRole("ADMIN","USER")
@@ -61,16 +61,15 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-
+    
         return source;
     }
 
